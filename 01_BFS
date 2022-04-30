@@ -1,4 +1,16 @@
-queue<int> q;
+class Solution {
+  public:
+    // Function to return Breadth First Traversal of given graph.
+    vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+        // Code here
+        vector<int> res;
+        vector<bool> vis(V,false);
+        solve(adj,res,vis);
+        return res;
+    }
+    
+    void solve(vector<int> adj[],vector<int>& res,vector<bool>& vis) {
+        queue<int> q;
         q.push(0);
         vis[0]=true;
         while(!q.empty()) {
@@ -7,8 +19,11 @@ queue<int> q;
             res.push_back(u);
             for(auto& v:adj[u]) {
                 if(!vis[v]) {
-                    solve(adj,res,vis);
+                    q.push(v);
                     vis[v]=true;
                 }
             }
         }
+    }
+};
+
