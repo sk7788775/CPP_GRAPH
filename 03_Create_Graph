@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool validPath(int n, vector<vector<int>>& arr, int s, int d) {
+        vector<int> adj[n];
+        for(auto x:arr) {
+            adj[x[0]].push_back(x[1]);
+            adj[x[1]].push_back(x[0]);
+        }
+        vector<bool> vis(n,false);
+        return solve(adj,vis,s,d);
+    }
+    
+    bool solve(vector<int> adj[],vector<bool>& vis,int u,int d) {
+        vis[u]=true;
+        if(u==d)
+            return true;
+        for(int v:adj[u]) {
+            if(!vis[v]) {
+                if(solve(adj,vis,v,d))
+                    return true;
+            }
+        }
+        return false;
+    }
+};
