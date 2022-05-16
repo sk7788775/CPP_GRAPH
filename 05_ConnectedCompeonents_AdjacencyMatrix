@@ -1,0 +1,33 @@
+class Solution {
+public:
+    
+    bool isSafe(vector<vector<int>>& adj,int i,int j,int n,vector<bool>& vis) {
+        return ((adj[i][j]==1) && (!vis[j]));
+    }
+    
+    void solve(vector<vector<int>>& adj,vector<bool>& vis,int u,int n) {
+        vis[u]=true;
+        for(int v=0;v<n;v++) {
+            if(isSafe(adj,u,v,n,vis)) {
+                solve(adj,vis,v,n);
+            }
+        }
+    }  
+    
+    int getComponents(vector<vector<int>>& adj,int n) {
+        int cou=0;
+        vector<bool> vis(n,false);
+        for(int i=0;i<n;i++) {
+            if(!vis[i]) {
+                solve(adj,vis,i,n);
+                cou++;
+            }
+        }
+        return cou;
+    }
+    
+    int findCircleNum(vector<vector<int>>& arr) {
+        return getComponents(arr,arr.size());
+    }
+
+};
