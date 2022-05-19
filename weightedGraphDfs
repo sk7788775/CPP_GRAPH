@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int count(vector<pair<int,int>> adj[],int u,int p) {
+    int res=1;
+    for(auto temp:adj[u]) {
+        if(temp.first==p)
+            continue;
+        res+=count(adj,temp.first,u);
+    }
+    return res;
+}
+
+void solve(vector<pair<int,int>> adj[],vector<int>& arr,int u,int p) {
+    for(auto temp:adj[u]) {
+        if(temp.first==p)
+            continue;
+        if(temp.second==1) {
+            arr[temp.first]=count(adj,temp.first,u);
+        } else {
+            solve(adj,arr,temp.first,u);
+        }
+    }
+}
+
+int main()
+{
+    long t;
+    cin >> t;
+    while((t--)>0) {
+        int n,k,u,v,x,curr;
+        long res=0;
+        cin >> n >> k;
+        vector<pair<int,int>> adj[n+1];
+        vector<int> arr(n+1,0);
+        for(int i=1;i<=n-1;i++) {
+            cin >> u >> v >> x;
+            pair p1(v,x);
+            pair p2(u,x);
+            adj[u].push_back(p1);
+            adj[v].push_back(p2);
+        }
+        solve(adj,arr,1,-1);
+        sort(arr.begin(), arr.end());
+        curr=n;
+        for(long i=n;i>0;i--) {
+            if(curr>k) {
+                curr-=arr[i];
+                res++;
+            } else {
+                break;
+            }
+        }
+        if(curr>k)
+            res=-1;
+        cout << res << endl;
+    }
+    return 0;
+}
